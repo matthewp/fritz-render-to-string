@@ -1,0 +1,29 @@
+{
+  "name": "fritz-render-to-string",
+  "version": "1.0.0-alpha.0",
+  "description": "Render fritz style h() to strings",
+  "main": "render-to-string.js",
+  "module": "src/main.js",
+  "files": [
+    "src",
+    "render-to-string.js"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewp/fritz-render-to-string.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matthewp/fritz-render-to-string/issues"
+  },
+  "homepage": "https://github.com/matthewp/fritz-render-to-string#readme",
+  "devDependencies": {
+    "@matthewp/compile": "^2.4.2",
+    "fritz": "^4.0.0-alpha.0"
+  }
+}
