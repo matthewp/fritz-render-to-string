@@ -1,4 +1,5 @@
 import fritz from 'fritz';
+import * as shim from './shim.js';
 
 const OPEN = 1;
 const CLOSE = 2;
@@ -63,11 +64,15 @@ function* render(vnode) {
 }
 
 function renderToString(vnode) {
-  let out = '';
+  let body = '';
   for(let part of render(vnode)) {
-    out += part;
+    body += part;
   }
-  return out;
+
+  return {
+    shim: shim.dev,
+    body
+  };
 }
 
 export {
