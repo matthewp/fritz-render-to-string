@@ -24,6 +24,6 @@
   "homepage": "https://github.com/matthewp/fritz-render-to-string#readme",
   "devDependencies": {
     "@matthewp/compile": "^2.4.2",
-    "fritz": "^4.0.0-alpha.0"
+    "fritz": "^5.0.0-alpha.0"
   }
 }

@@ -323,9 +323,9 @@ foreach@~2.0.1:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/foreach/-/foreach-2.0.5.tgz#0bee005018aeb260d0a3af3ae658dd0136ec1b99"
 
-fritz@^4.0.0-alpha.0:
-  version "4.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/fritz/-/fritz-4.0.0-alpha.0.tgz#7285ffbe3b6ca8af341a196a0686cdb597c3a9c6"
+fritz@^5.0.0-alpha.0:
+  version "5.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/fritz/-/fritz-5.0.0-alpha.0.tgz#fdcfe2b4e4187fd25ae0722922457cc8afc09a88"
 
 fwd-stream@^1.0.4:
   version "1.0.4"
