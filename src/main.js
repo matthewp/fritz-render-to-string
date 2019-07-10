@@ -5,6 +5,8 @@ const OPEN = 1;
 const CLOSE = 2;
 const TEXT = 4;
 
+const banned = new Set(['__self', '__source']);
+
 const encodeEntities = s => String(s)
 	.replace(/&/g, '&amp;')
 	.replace(/</g, '&lt;')
@@ -32,9 +34,14 @@ function* render(vnode) {
             yield ' ';
           }
           let attrName = attrs[i];
-          let attrValue = attrs[i + 1];
-          pushProps(attrName, attrValue);
-          yield attrName + '="' + encodeEntities(attrValue) + '"';
+
+          // Prevent pushing dev hyperscript props
+          if(!banned.has(attrName)) {
+            let attrValue = attrs[i + 1];
+            pushProps(attrName, attrValue);
+            yield attrName + '="' + encodeEntities(attrValue) + '"';
+          }
+
           i += 2;
         }
         yield '>';

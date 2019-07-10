@@ -16,4 +16,11 @@ describe('renderToString', () => {
     let { body } = renderToString(h('on-click'));
     assert.equal(body, expected);
   });
+
+  it('Doesn\'t render __self and __source attrs from sucrase', () => {
+    let expected = '<div class="foo"></div>';
+    let vdom = h('div', { class: 'foo', __self: 'info', __source: 'info' });
+    let { body } = renderToString(vdom);
+    assert.equal(body, expected);
+  });
 });
