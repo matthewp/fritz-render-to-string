@@ -9,7 +9,8 @@
     "render-to-string.js"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/test.js",
+    "test-debug": "node --inspect-brk node_modules/.bin/_mocha test/test.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
   "homepage": "https://github.com/matthewp/fritz-render-to-string#readme",
   "devDependencies": {
     "@matthewp/compile": "^2.4.2",
-    "fritz": "^5.0.0-alpha.0"
+    "fritz": "^5.0.0-alpha.0",
+    "mocha": "^6.1.4"
   }
 }
