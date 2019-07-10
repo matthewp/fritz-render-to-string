@@ -29,14 +29,17 @@ function* render(vnode) {
         yield '<' + tagName;
         let attrs = instr[3];
         let i = 0, attrLen = attrs ? attrs.length : 0;
+        let sentFirstSpace = false;
         while(i < attrLen) {
-          if(i === 0) {
-            yield ' ';
-          }
           let attrName = attrs[i];
-
+ 
           // Prevent pushing dev hyperscript props
           if(!banned.has(attrName)) {
+            if(!sentFirstSpace) {
+              yield ' ';
+              sentFirstSpace = true;
+            }
+
             let attrValue = attrs[i + 1];
             pushProps(attrName, attrValue);
             yield attrName + '="' + encodeEntities(attrValue) + '"';

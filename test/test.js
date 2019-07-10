@@ -23,4 +23,11 @@ describe('renderToString', () => {
     let { body } = renderToString(vdom);
     assert.equal(body, expected);
   });
+
+  it('Elements with no attributes should not have a space before the >', () => {
+    let expected = '<div></div>';
+    let vdom = h('div', { __source: '' }, []);
+    let { body } = renderToString(vdom);
+    assert.equal(body, expected);
+  });
 });
