@@ -30,4 +30,11 @@ describe('renderToString', () => {
     let { body } = renderToString(vdom);
     assert.equal(body, expected);
   });
+
+  it('Self-closing tags work', () => {
+    let expected = '<div><br><input type="text"></div>';
+    let vdom = h('div', null, [h('br'), h('input', {type: 'text'})]);
+    let { body } = renderToString(vdom);
+    assert.equal(body, expected);
+  })
 });

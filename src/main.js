@@ -11,7 +11,14 @@ const encodeEntities = s => String(s)
 	.replace(/&/g, '&amp;')
 	.replace(/</g, '&lt;')
 	.replace(/>/g, '&gt;')
-	.replace(/"/g, '&quot;');
+  .replace(/"/g, '&quot;');
+
+const voids = new Set([
+  'area','base','br','col',
+  'embed','hr','img','input',
+  'link','meta','param',
+  'source','track','wbr'
+]);
 
 function* render(vnode) {
   let position = 0, len = vnode.length;
@@ -60,7 +67,10 @@ function* render(vnode) {
         break;
       }
       case CLOSE: {
-        yield '</' + instr[1] + '>';
+        let tagName = instr[1];
+        if(!voids.has(tagName)) {
+          yield '</' + instr[1] + '>';
+        }
         break;
       }
       case TEXT: {
