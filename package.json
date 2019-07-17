@@ -1,6 +1,6 @@
 {
   "name": "fritz-render-to-string",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-alpha.8",
   "description": "Render fritz style h() to strings",
   "main": "render-to-string.js",
   "module": "src/main.js",
