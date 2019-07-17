@@ -103,7 +103,7 @@ function* render(vnode) {
   return needsHoisting;
 }
 
-function renderToString(vnode) {
+function renderToString(vnode, { dev = false } = {}) {
   let styles = new Map();
   let styleParts = [];
   let parts = [];
@@ -123,11 +123,12 @@ function renderToString(vnode) {
     }
   }
 
-  let shim = shims.basicDev;
+  let shimStyles = dev ? shims.stylesDev : shims.stylesMinified;
+  let shim = dev ? shims.basicDev : shims.basicMinified;
 
   for(let [text, [count, indices]] of styles) {
     if(count > 1) {
-      shim = shims.stylesDev;
+      shim = shimStyles;
       let id = `style-${styleParts.length + 1}`;
       styleParts.push(`<template id="${id}"><style>${text}</style></template>`);
 

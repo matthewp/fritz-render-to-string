@@ -8,6 +8,8 @@ customElements.define('f-shadow', class extends HTMLElement {
   }
 });`.trim();
 
+export const basicMinified = `customElements.define(f-shadow,class extends HTMLElement{connectedCallback(){let a=this.parentNode,b=a.firstElementChild;this.remove(),b.remove(),a.attachShadow({mode:open}).append(b.content.cloneNode(!0))}});`;
+
 export const stylesDev = `
 customElements.define('f-shadow', class extends HTMLElement {
   connectedCallback() {
@@ -25,4 +27,4 @@ customElements.define('f-shadow', class extends HTMLElement {
   }
 });`.trim();
 
-export const minified = ``;
+export const stylesMinified = `customElements.define(f-shadow,class extends HTMLElement{connectedCallback(){let a=this.parentNode,b=a.firstElementChild;this.remove(),b.remove();let c=b.content.cloneNode(!0);if(this.hasAttribute(styles))for(let a of c.querySelectorAll(a[data-c])){let b=document.getElementById(a.dataset.f).content.firstChild.textContent;a.textContent=b,delete a.dataset.f}a.attachShadow({mode:open}).append(c)}});`;
