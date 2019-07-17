@@ -36,5 +36,12 @@ describe('renderToString', () => {
     let vdom = h('div', null, [h('br'), h('input', {type: 'text'})]);
     let { body } = renderToString(vdom);
     assert.equal(body, expected);
-  })
+  });
+
+  it('Hoists duplicate style tags', () => {
+    let expected = '<template id="style-1"><style>body{color:blue;}</style></template><div><style data-f="style-1"></style><style data-f="style-1"></style></div>';
+    let vdom = h('div', null, [h('style', null, 'body{color:blue;}'), h('style', null, 'body{color:blue;}')]);
+    let { body } = renderToString(vdom);
+    assert.equal(body, expected);
+  });
 });

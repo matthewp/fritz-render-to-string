@@ -1,5 +1,5 @@
 import fritz from 'fritz';
-import * as shim from './shim.js';
+import * as shims from './shim.js';
 
 const OPEN = 1;
 const CLOSE = 2;
@@ -21,7 +21,7 @@ const voids = new Set([
 ]);
 
 function* render(vnode) {
-  let position = 0, len = vnode.length;
+  let position = 0, len = vnode.length, inStyle = false, needsHoisting = false;
   while(position < len) {
     let instr = vnode[position];
     let command = instr[0];
@@ -32,6 +32,11 @@ function* render(vnode) {
         let Component = fritz._tags.get(tagName);
         let props = Component ? {} : null;
         let pushProps = props ? (name, value) => props[name] = value : Function.prototype;
+
+        if(tagName === 'style') {
+          inStyle = true;
+          break;
+        }
 
         yield '<' + tagName;
         let attrs = instr[3];
@@ -60,13 +65,18 @@ function* render(vnode) {
         if(Component) {
           yield '<template>';
           let instance = new Component();
-          yield* render(instance.render(props, {}));
-          yield '</template><f-shadow></f-shadow>';
+          let includeStyleUpgrade = yield* render(instance.render(props, {}));
+          yield `</template><f-shadow${includeStyleUpgrade ? ' styles' : ''}></f-shadow>`;
         }
 
         break;
       }
       case CLOSE: {
+        if(inStyle) {
+          inStyle = false;
+          break;
+        }
+
         let tagName = instr[1];
         if(!voids.has(tagName)) {
           yield '</' + instr[1] + '>';
@@ -74,23 +84,65 @@ function* render(vnode) {
         break;
       }
       case TEXT: {
-        yield encodeEntities(instr[1]);
+        let text = instr[1];
+        let encoded = encodeEntities(text);
+        if(inStyle) {
+          needsHoisting = true;
+          yield [0, text];
+          break;
+        }
+
+        yield encoded;
         break;
       }
     }
 
     position++;
   }
+
+  return needsHoisting;
 }
 
 function renderToString(vnode) {
-  let body = '';
+  let styles = new Map();
+  let styleParts = [];
+  let parts = [];
   for(let part of render(vnode)) {
-    body += part;
+    if(Array.isArray(part)) {
+      let string = part[1];
+      let data = styles.get(string);
+      if(!data) {
+        data = [0,[]];
+        styles.set(string, data);
+      }
+      data[0]++;
+      data[1].push(parts.length);
+      parts.push('');
+    } else {
+      parts.push(part);
+    }
   }
 
+  let shim = shims.basicDev;
+
+  for(let [text, [count, indices]] of styles) {
+    if(count > 1) {
+      shim = shims.stylesDev;
+      let id = `style-${styleParts.length + 1}`;
+      styleParts.push(`<template id="${id}"><style>${text}</style></template>`);
+
+      for(let index of indices) {
+        parts[index] = `<style data-f="${id}"></style>`;
+      }
+    } else {
+      parts[indices[0]] = text;
+    }
+  }
+
+  let body = styleParts.join('') + parts.join('');
+
   return {
-    shim: shim.dev,
+    shim,
     body
   };
 }
